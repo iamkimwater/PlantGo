@@ -7,7 +7,9 @@
     "android:dev": "npx react-native run-android --variant=devDebug --appIdSuffix dev",
     "android:alpha": "npm ci && cd android && ./gradlew assembleAlphaDebug && cd .. && open android/app/build/outputs/apk/alpha/debug",
     "android:beta": "npm ci && cd android && ./gradlew assemblebetaRelease && cd .. && open android/app/build/outputs/apk/beta/release",
-    "android:prod": "npm ci && cd android && ./gradlew bundleProdRelease && cd .. && open android/app/build/outputs/bundle/prod/release"
+    "android:prod": "npm ci && cd android && ./gradlew bundleProdRelease && cd .. && open android/app/build/outputs/bundle/prod/release",
+    "update:patch": "npm version patch --no-git-tag-version && bundle exec --gemfile=./Gemfile fastlane patch_update",
+    "update:minor": "npm version minor --no-git-tag-version && bundle exec --gemfile=./Gemfile fastlane minor_update"
   },
   "dependencies": {
     "react": "18.2.0",
