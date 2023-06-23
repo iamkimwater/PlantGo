@@ -1,4 +1,4 @@
-package com.plantgo;
+package com.iamkimwater.plantgo;
 
 import android.app.Application;
 import com.facebook.react.PackageList;

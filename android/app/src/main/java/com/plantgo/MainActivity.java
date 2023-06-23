@@ -1,4 +1,4 @@
-package com.plantgo;
+package com.iamkimwater.plantgo;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

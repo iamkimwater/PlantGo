@@ -1,3 +1,6 @@
 <resources>
+    <string name="app_name_dev">PlantGo dev</string>
+    <string name="app_name_alpha">PlantGo alpha</string>
+    <string name="app_name_beta">PlantGo beta</string>
     <string name="app_name">PlantGo</string>
 </resources>
