@@ -88,11 +88,20 @@ def reactNativeArchitectures() {
     return value ? value.split(",") : ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
 }
 
-def dotenv = new File(rootProject.projectDir, '.env')
+def dotenvFiles = [
+    devDebug: ".env.dev",
+    alphaDebug: ".env.alpha",
+    betaRelease: ".env.beta",
+    prodRelease: ".env.prod"
+]
+
 java.util.Properties envProps = new java.util.Properties()
 
-if (dotenv.canRead()) {
-    envProps.load(new FileInputStream(dotenv))
+dotenvFiles.each { variant, envFile ->
+    def file = new File(rootProject.projectDir, envFile)
+    if (file.canRead()) {
+        envProps.load(new FileInputStream(file))
+    }
 }
 
 android {
@@ -129,7 +138,7 @@ android {
             if (project.hasProperty('PLANTGO_UPLOAD_STORE_FILE')) {
                 storeFile file(PLANTGO_UPLOAD_STORE_FILE)
                 storePassword envProps['PLANTGO_UPLOAD_STORE_PASSWORD'].toString()
-                keyAlias PLANTGO_UPLOAD_KEY_ALIAS
+                keyAlias envProps['PLANTGO_UPLOAD_KEY_ALIAS'].toString()
                 keyPassword envProps['PLANTGO_UPLOAD_KEY_PASSWORD'].toString()
             }
         }
@@ -152,21 +161,25 @@ android {
             dimension "type"
             applicationIdSuffix ".dev"
             manifestPlaceholders = [appName: "@string/app_name_dev"]
+            resValue "string","CodePushDeploymentKey", ""
         }
         alpha {
             dimension "type"
             applicationIdSuffix ".alpha"
             manifestPlaceholders = [appName: "@string/app_name_alpha"]
+            resValue "string", "CodePushDeploymentKey", ""
         }
         beta {
             dimension "type"
             applicationIdSuffix ".beta"
             manifestPlaceholders = [appName: "@string/app_name_beta"]
+            resValue "string", "CodePushDeploymentKey", "L9ZtsWh9YhZJP1utc7zDbgXCA7zPjKfCV7s50"
         }
         prod {
             dimension "type"
             applicationIdSuffix ""
             manifestPlaceholders = [appName: "@string/app_name"]
+            resValue "string", "CodePushDeploymentKey", "V9dRAGrvVL-zqdXuuEgbgxeEmAB-kWucBb1BJ"
         }
     }
     // applicationVariants are e.g. debug, release
@@ -202,12 +215,6 @@ dependencies {
     }
 }
 
-project.ext.envConfigFiles = [
-    devdebug: ".env.dev",
-    alphadebug: ".env.alpha",
-    betarelease: ".env.beta",
-    prodrelease: ".env.prod"
-]
-
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
+apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)

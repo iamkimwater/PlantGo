@@ -90,3 +90,10 @@ ios 프로젝트가 없는 상태이므로 파일 직접 생성
 
 #### < fixed file list >
 - android/app/build.gradle
+
+### 7. Setting for Codepush
+1) Add the SDK to the project
+```
+npm install appcenter appcenter-analytics appcenter-crashes --save-exact
+```
+2) Integrate the SDK
